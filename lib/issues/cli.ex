@@ -2,6 +2,7 @@ defmodule Issues.CLI do
   @moduledoc """
     module interfaces with command line and parses arguments using option parser
   """
+  import Issues.TableFormatter
   @default_count 4
 
   def run(argv) do
@@ -37,6 +38,7 @@ defmodule Issues.CLI do
     |> convert_list_into_maps
     |> sort_into_ascending_order
     |> Enum.take(count)
+    |> print_table_for_columns(["number","created_at","title"])
   end
 
   def decode_response({:ok, body}), do: body
