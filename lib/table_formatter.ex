@@ -5,7 +5,9 @@ defmodule Issues.TableFormatter do
     column_data = split_data(rows,headers)
     column_widths = widths(column_data)
     format = format_for(column_widths)
-    inspect format
+    puts_one_line_in_columns headers, format
+    IO.puts separator(column_widths)
+    puts_in_columns column_data,format 
   end
 
 
@@ -30,5 +32,20 @@ defmodule Issues.TableFormatter do
 
   def format_for(column_widths) do
     Enum.map_join(column_widths , " | " , fn width -> "~-#{width}s" end) <> "~n" 
+  end
+
+  def puts_one_line_in_columns(fields, format) do
+    :io.format(format, fields)
+  end
+
+  def separator(column_widths) do
+    Enum.map_join(column_widths, "-+-", fn width -> List.duplicate("-", width) end)
+  end
+
+  def puts_in_columns(data_by_columns, format) do
+    data_by_columns
+    |> List.zip
+    |> map(&Tuple.to_list/1)
+    |> each(&puts_one_line_in_columns(&1, format))
   end
 end

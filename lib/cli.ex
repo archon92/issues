@@ -5,10 +5,10 @@ defmodule Issues.CLI do
   import Issues.TableFormatter
   @default_count 4
 
-  def run(argv) do
+  def main(argv) do
     argv
-      |> parse_args
-      |> process
+    |> parse_args
+    |> process
   end
 
   def parse_args(argv) do
@@ -18,7 +18,7 @@ defmodule Issues.CLI do
       {[help: true], _, _} 
       -> :help
       { _, [user,project,count], _}
-      -> {user,project,count}
+      -> {user,project,String.to_integer(count)}
       { _, [user,project], _ }
       -> {user,project,@default_count}
       _ -> :help
